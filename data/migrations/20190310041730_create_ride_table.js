@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
         tbl.integer('driver_id').unsigned();
         tbl.foreign('driver_id').references('drivers').on('drivers')
 
-        tbl.timestamp('created_at')
+        tbl.timestamp('created_at').defaultTo(knex.fn.now());
 
 
   

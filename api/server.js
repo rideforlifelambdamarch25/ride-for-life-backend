@@ -2,13 +2,17 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 
-const configureRoutes = require("./config/routes.js");
+
+// Routers
+const driversRouter = require('./Routes/driverRouter/driverRouter')
+const usersRouter = require('./Routes/userRouter/userRouter')
 
 const server = express();
 
 server.use(helmet(), cors(), express.json());
 
-// configureRoutes(server);
+server.use('/api/drivers', driversRouter);
+server.use('/api/users', usersRouter)
 
 server.get("/", async (req, res) => {
   res.status(200).json({

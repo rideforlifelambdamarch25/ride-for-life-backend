@@ -24,6 +24,8 @@ router.post("/register", async (req, res) => {
   } = req.body;
 
   const newDriver = req.body;
+  const hash = bcrypt.hashSync(password, 12);
+  newDriver.password = hash;
 
   if (
     !firstname ||
@@ -38,10 +40,6 @@ router.post("/register", async (req, res) => {
       .status(400)
       .json({ message: "Please include all required information" });
   } else {
-    // hashing passowrd before saving to the database
-    const hash = bcrypt.hashSync(password);
-    newDriver.password = hash;
-    console.log(newDriver.password);
     try {
       const driver = await db.addDriver(newDriver);
 

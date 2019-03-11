@@ -46,16 +46,14 @@ function getDriverRideTotal(id) {
     .first();
 }
 
-
 async function addDriver(driver) {
-    const [id] = await db('drivers').insert(driver)
+  const [id] = await db("drivers").insert(driver);
 
-    return getDriverById(id);
+  return getDriverById(id);
 }
 
-
 function removeDriver(id) {
-    return db('drivers')
-    .where('driver_id', id)
-    .del()
+  return db("drivers")
+    .where("driver_id", id)
+    .del();
 }

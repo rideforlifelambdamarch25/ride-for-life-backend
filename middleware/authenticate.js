@@ -27,10 +27,9 @@ function restricted(req, res, next) {
 }
 
 function generateToken(user) {
-  
   // check if user is a mother/caretaker or driver
   // set token based on which user type
-  const payload = {};
+  let payload = {};
 
   if (user.driver_id) {
     const driver = user;
@@ -55,11 +54,10 @@ function generateToken(user) {
   return jwt.sign(payload, secret, options);
 }
 
-
 // Verify user is a driver and allow access to driver only endpoints
 function verifyDriver(type) {
   return function(req, res, next) {
-    if (req.decodedJwt.type && req.decodedJwt.type === 'driver') {
+    if (req.decodedJwt.type && req.decodedJwt.type === "driver") {
       next();
     } else {
       res.status(403).json({ message: "Not Authorized" });

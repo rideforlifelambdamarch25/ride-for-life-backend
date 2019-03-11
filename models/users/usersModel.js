@@ -5,9 +5,22 @@ module.exports = {
   getUserById
 };
 
-
 function getUsers() {
-    return db("users").select(
+  return db("users").select(
+    "user_id",
+    "firstname",
+    "lastname",
+    "username",
+    "email",
+    "phone",
+    "user_type",
+    "location"
+  );
+}
+
+function getUserById(id) {
+  return db("users")
+    .select(
       "user_id",
       "firstname",
       "lastname",
@@ -16,20 +29,12 @@ function getUsers() {
       "phone",
       "user_type",
       "location"
-    );
-  }
-
-
-  function getUserById(id) {
-    return db('users')
-    .select("user_id",
-    "firstname",
-    "lastname",
-    "username",
-    "email",
-    "phone",
-    "user_type",
-    "location")
-    .where('user_id', id)
+    )
+    .where("user_id", id)
     .first();
-  }
+}
+
+async function addUser(user) {
+  const [id] = await db("drivers").insert(user);
+  return getUserById(id);
+}

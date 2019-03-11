@@ -1,6 +1,9 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("drivers", tbl => {
-    tbl.increments("driver_id");
+    tbl
+      .increments("driver_id")
+      .notNullable()
+      .primary();
 
     tbl.string("firstname", 255).notNullable();
 

@@ -1,9 +1,10 @@
 const fake = require("faker");
+const bcrypt = require("bcryptjs");
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex("users")
-    .truncate()
+    .del()
     .then(function() {
       // Inserts seed entries
       return knex("users").insert([
@@ -14,7 +15,7 @@ exports.seed = function(knex, Promise) {
           user_type: "mother",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email()
         },
         {
@@ -24,7 +25,7 @@ exports.seed = function(knex, Promise) {
           user_type: "mother",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email()
         },
         {
@@ -34,7 +35,7 @@ exports.seed = function(knex, Promise) {
           user_type: "mother",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email()
         },
         {
@@ -44,7 +45,7 @@ exports.seed = function(knex, Promise) {
           user_type: "caretaker",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email()
         },
         {
@@ -54,7 +55,7 @@ exports.seed = function(knex, Promise) {
           user_type: "mother",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email()
         },
         {
@@ -64,7 +65,7 @@ exports.seed = function(knex, Promise) {
           user_type: "caretaker",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email()
         }
       ]);

@@ -8,60 +8,6 @@ const {
   restricted
 } = require("../.../../../../middleware/authenticate");
 
-// REGISTER DRIVER
-
-router.post("/register", async (req, res) => {
-  const {
-    firstname,
-    lastname,
-    username,
-    password,
-    email,
-    phone,
-    vehicle_type,
-    location,
-    price
-  } = req.body;
-
-  const newDriver = req.body;
-  const hash = bcrypt.hashSync(password, 12);
-  newDriver.password = hash;
-
-  if (
-    !firstname ||
-    !lastname ||
-    !username ||
-    !password ||
-    !phone ||
-    !vehicle_type
-  ) {
-    // All required information needed to create a new account
-    res
-      .status(400)
-      .json({ message: "Please include all required information" });
-  } else {
-    try {
-      const driver = await db.addDriver(newDriver);
-
-      if (driver) {
-        const token = generateToken(newDriver);
-        console.log(token);
-        res.status(201).json({
-          message: "Registration Successful",
-          driver,
-          token
-        });
-      } else {
-        res
-          .status(400)
-          .json({ message: "There was an error registering your account" });
-      }
-    } catch (error) {
-      res.status(500).json({ message: "A network error occurred" });
-    }
-  }
-});
-
 // GET ENDPOINTS
 
 router.get("/", async (req, res) => {
@@ -103,6 +49,23 @@ router.get("/:id", async (req, res) => {
       });
     }
   }
+});
+
+router.put("/:id", async (req, res) => {
+  const {
+    firstname,
+    lastname,
+    username,
+    password,
+    email,
+    phone,
+    vehicle_type,
+    location,
+    price
+  } = req.body;
+
+  const changes = req.body;
+  const { id } = req.params;
 });
 
 // DELETE

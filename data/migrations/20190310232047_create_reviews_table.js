@@ -1,6 +1,9 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("reviews", tbl => {
-    tbl.increments("review_id");
+    tbl
+      .increments("review_id")
+      .notNullable()
+      .primary();
 
     tbl.string("review_content", 255).notNullable();
     tbl.integer("rating").unsigned();
@@ -9,13 +12,15 @@ exports.up = function(knex, Promise) {
     tbl
       .foreign("user_id")
       .references("user_id")
-      .on("users");
+      .inTable("users")
+      .onDelete("CASCADE");
 
     tbl.integer("driver_id").unsigned();
     tbl
       .foreign("driver_id")
-      .references("drivers")
-      .on("drivers");
+      .references("driver_id")
+      .inTable("drivers")
+      .onDelete("CASCADE");
 
     tbl.timestamp("created_at").defaultTo(knex.fn.now());
   });

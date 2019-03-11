@@ -5,7 +5,9 @@ module.exports = {
   getDriverById,
   getDriverRideTotal,
   addDriver,
-  removeDriver
+  removeDriver,
+  updateDriver,
+  findDriverByUsername
 };
 
 function getDrivers() {
@@ -56,4 +58,16 @@ function removeDriver(id) {
   return db("drivers")
     .where("driver_id", id)
     .del();
+}
+
+function updateDriver(id, changes) {
+  return db("drivers")
+    .where("driver_id", id)
+    .update(changes);
+}
+
+function findDriverByUsername(username) {
+  return db("drivers")
+    .where("username", username)
+    .first();
 }

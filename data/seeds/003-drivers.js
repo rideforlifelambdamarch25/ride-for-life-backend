@@ -1,9 +1,10 @@
 const fake = require("faker");
+const bcrypt = require("bcryptjs");
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex("drivers")
-    .truncate()
+    .del()
     .then(function() {
       // Inserts seed entries
       return knex("drivers").insert([
@@ -14,7 +15,7 @@ exports.seed = function(knex, Promise) {
           vehicle_type: "motorcycle",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email(),
           price: fake.random.number(200)
         },
@@ -25,7 +26,7 @@ exports.seed = function(knex, Promise) {
           vehicle_type: "motorcycle",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email(),
           price: fake.random.number(200)
         },
@@ -36,7 +37,7 @@ exports.seed = function(knex, Promise) {
           vehicle_type: "motorcycle",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email(),
           price: fake.random.number(200)
         },
@@ -47,7 +48,7 @@ exports.seed = function(knex, Promise) {
           vehicle_type: "motorcycle",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email(),
           price: fake.random.number(200)
         },
@@ -58,7 +59,7 @@ exports.seed = function(knex, Promise) {
           vehicle_type: "motorcycle",
           location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
           username: fake.internet.userName(),
-          password: fake.internet.password(),
+          password: bcrypt.hashSync("password", 12),
           email: fake.internet.email(),
           price: fake.random.number(200)
         }

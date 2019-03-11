@@ -1,6 +1,14 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const cors = require("cors");
+
 const helmet = require("helmet");
+
+const {
+  restricted,
+  verifyDriver,
+  verifyUser
+} = require("../middleware/authenticate");
 
 // Routers
 const driversRouter = require("./Routes/driverRouter/driverRouter");
@@ -12,8 +20,8 @@ const server = express();
 server.use(helmet(), cors(), express.json());
 
 server.use("/api", authRouter);
-server.use("/api/drivers", driversRouter);
-server.use("/api/users", usersRouter);
+server.use("/api/drivers", restricted, driversRouter);
+server.use("/api/users", restricted, usersRouter);
 
 server.get("/", async (req, res) => {
   res.status(200).json({

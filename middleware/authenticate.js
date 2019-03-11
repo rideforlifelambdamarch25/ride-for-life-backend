@@ -6,17 +6,19 @@ const secret = process.env.JWT_SECRET || "USE THIS SECRET";
 
 module.exports = {
   restricted,
-  generateToken
+  generateToken,
+  verifyDriver,
+  verifyUser
 };
 
 function restricted(req, res, next) {
   const token = req.get("Authorization");
 
   if (token) {
-    jwt.verify(token, jwtKey, (err, decoded) => {
+    jwt.verify(token, secret, (err, decoded) => {
       if (err) return res.status(401).json(err);
-
       req.decoded = decoded;
+
       next();
     });
   } else {
@@ -57,7 +59,7 @@ function generateToken(user) {
 // Verify user is a driver and allow access to driver only endpoints
 function verifyDriver(type) {
   return function(req, res, next) {
-    if (req.decodedJwt.type && req.decodedJwt.type === "driver") {
+    if (req.decoded.type && req.decoded.type === "driver") {
       next();
     } else {
       res.status(403).json({ message: "Not Authorized" });

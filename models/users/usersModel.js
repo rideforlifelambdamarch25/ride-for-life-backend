@@ -3,7 +3,9 @@ const db = require("../../data/dbConfig");
 module.exports = {
   getUsers,
   getUserById,
-  updateUser
+  updateUser,
+  addUser,
+  findUserByUsername
 };
 
 function getUsers() {
@@ -36,7 +38,7 @@ function getUserById(id) {
 }
 
 async function addUser(user) {
-  const [id] = await db("drivers").insert(user);
+  const [id] = await db("users").insert(user);
   return getUserById(id);
 }
 
@@ -44,4 +46,10 @@ function updateUser(id, changes) {
   return db("users")
     .where("user_id", id)
     .update(changes);
+}
+
+function findUserByUsername(username) {
+  return db("users")
+    .where("username", username)
+    .first();
 }

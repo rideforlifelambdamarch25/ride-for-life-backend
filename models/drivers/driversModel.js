@@ -49,7 +49,7 @@ function getDriverRideTotal(id) {
 }
 
 async function addDriver(driver) {
-  const [id] = await db("drivers").insert(driver);
+  const [id] = await db("drivers").insert(driver, "id");
 
   return getDriverById(id);
 }

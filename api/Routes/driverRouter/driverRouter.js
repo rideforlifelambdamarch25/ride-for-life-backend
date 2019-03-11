@@ -1,12 +1,6 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
 const router = express.Router();
-
 const db = require("../../../models/drivers/driversModel");
-const {
-  generateToken,
-  restricted
-} = require("../.../../../../middleware/authenticate");
 
 // GET ENDPOINTS
 
@@ -51,15 +45,21 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// PUT
 router.put("/:id", async (req, res) => {
   const changes = req.body;
   const { id } = req.params;
 
   try {
-    const updatedDriver = await db.updateDriver(id, changes);
-    res.status(200).json({
-      message: "Update successful"
-    });
+    const driver = await db.getDriverById(id);
+    if (!driver) {
+      res.status(404).json({ message: "The specified driver does not exist" });
+    } else {
+      await db.updateDriver(id, changes);
+      res.status(200).json({
+        message: "Update successful"
+      });
+    }
   } catch (error) {
     res.status(500).json({ message: "A network error ocurred" });
   }

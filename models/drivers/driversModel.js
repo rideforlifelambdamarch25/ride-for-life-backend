@@ -3,7 +3,9 @@ const db = require("../../data/dbConfig");
 module.exports = {
   getDrivers,
   getDriverById,
-  getDriverRideTotal
+  getDriverRideTotal,
+  addDriver,
+  removeDriver
 };
 
 function getDrivers() {
@@ -37,17 +39,23 @@ function getDriverById(id) {
 }
 
 function getDriverRideTotal(id) {
-  
-    if (id) {
-        return db('drivers')
-        .join('rides', 'drivers.driver_id', 'rides.driver_id')
-        .count('drivers.driver_id as total_rides')
-        .where('drivers.driver_id', id)
-        .first();
-  } else {
+  return db("drivers")
+    .join("rides", "drivers.driver_id", "rides.driver_id")
+    .count("drivers.driver_id as total_rides")
+    .where("drivers.driver_id", id)
+    .first();
+}
+
+
+async function addDriver(driver) {
+    const [id] = await db('drivers').insert(driver)
+
+    return getDriverById(id);
+}
+
+
+function removeDriver(id) {
     return db('drivers')
-        .join('rides', 'drivers.driver_id', 'rides.driver_id')
-        .select('drivers.driver_id').count('drivers.driver_id as total_rides')
-        .first();
-  }
+    .where('driver_id', id)
+    .del()
 }

@@ -1,12 +1,12 @@
-const fake = require('faker');
-
+const fake = require("faker");
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex('drivers').del()
-    .then(function () {
+  return knex("drivers")
+    .truncate()
+    .then(function() {
       // Inserts seed entries
-      return knex('drivers').insert([
+      return knex("drivers").insert([
         {
           firstname: fake.name.firstName(),
           lastname: fake.name.lastName(),
@@ -16,7 +16,7 @@ exports.seed = function(knex, Promise) {
           username: fake.internet.userName(),
           password: fake.internet.password(),
           email: fake.internet.email(),
-          price: fake.random.number(200),
+          price: fake.random.number(200)
         },
         {
           firstname: fake.name.firstName(),
@@ -27,7 +27,7 @@ exports.seed = function(knex, Promise) {
           username: fake.internet.userName(),
           password: fake.internet.password(),
           email: fake.internet.email(),
-          price: fake.random.number(200),
+          price: fake.random.number(200)
         },
         {
           firstname: fake.name.firstName(),
@@ -38,7 +38,7 @@ exports.seed = function(knex, Promise) {
           username: fake.internet.userName(),
           password: fake.internet.password(),
           email: fake.internet.email(),
-          price: fake.random.number(200),
+          price: fake.random.number(200)
         },
         {
           firstname: fake.name.firstName(),
@@ -49,7 +49,7 @@ exports.seed = function(knex, Promise) {
           username: fake.internet.userName(),
           password: fake.internet.password(),
           email: fake.internet.email(),
-          price: fake.random.number(200),
+          price: fake.random.number(200)
         },
         {
           firstname: fake.name.firstName(),
@@ -60,9 +60,8 @@ exports.seed = function(knex, Promise) {
           username: fake.internet.userName(),
           password: fake.internet.password(),
           email: fake.internet.email(),
-          price: fake.random.number(200),
-        },
-        
+          price: fake.random.number(200)
+        }
       ]);
     });
 };

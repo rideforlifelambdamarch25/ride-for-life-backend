@@ -19,6 +19,7 @@ const server = express();
 
 server.use(helmet(), cors(), express.json());
 
+// ROUTES
 server.use("/api", authRouter);
 server.use("/api/drivers", restricted, driversRouter);
 server.use("/api/users", restricted, usersRouter);

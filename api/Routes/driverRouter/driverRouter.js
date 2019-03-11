@@ -52,20 +52,17 @@ router.get("/:id", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const {
-    firstname,
-    lastname,
-    username,
-    password,
-    email,
-    phone,
-    vehicle_type,
-    location,
-    price
-  } = req.body;
-
   const changes = req.body;
   const { id } = req.params;
+
+  try {
+    const updatedDriver = await db.updateDriver(id, changes);
+    res.status(200).json({
+      message: "Update successful"
+    });
+  } catch (error) {
+    res.status(500).json({ message: "A network error ocurred" });
+  }
 });
 
 // DELETE

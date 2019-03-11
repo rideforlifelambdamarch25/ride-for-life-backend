@@ -7,7 +7,8 @@ module.exports = {
   addDriver,
   removeDriver,
   updateDriver,
-  findDriverByUsername
+  findDriverByUsername,
+  getDriverReviews
 };
 
 function getDrivers() {
@@ -46,6 +47,13 @@ function getDriverRideTotal(id) {
     .count("drivers.driver_id as total_rides")
     .where("drivers.driver_id", id)
     .first();
+}
+
+function getDriverReviews(id) {
+  return db("drivers")
+    .select("reviews.user_id", "reviews.review_content", "reviews.rating")
+    .join("reviews", "drivers.driver_id", "reviews.driver_id")
+    .where("drivers.driver_id", id);
 }
 
 async function addDriver(driver) {

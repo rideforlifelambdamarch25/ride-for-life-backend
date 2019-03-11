@@ -27,7 +27,7 @@ router.get("/:id", async (req, res) => {
     try {
       const driver = await db.getDriverById(id);
       const rideTotal = await db.getDriverRideTotal(id);
-
+      const reviews = await db.getDriverReviews(id);
       // TODO: RETRIEVE REVIEWS and add to response
 
       if (!driver) {
@@ -35,7 +35,7 @@ router.get("/:id", async (req, res) => {
           .status(404)
           .json({ message: "The user with specified ID does not exist" });
       } else {
-        res.status(200).json({ ...driver, ...rideTotal });
+        res.status(200).json({ ...driver, ...rideTotal, reviews });
       }
     } catch (error) {
       res.status(500).json({

@@ -8,7 +8,8 @@ module.exports = {
   removeDriver,
   updateDriver,
   findDriverByUsername,
-  getDriverReviews
+  getDriverReviews,
+  addDriverReview
 };
 
 function getDrivers() {
@@ -78,4 +79,15 @@ function findDriverByUsername(username) {
   return db("drivers")
     .where("username", username)
     .first();
+}
+
+function getReviewById(id) {
+  return db("reviews")
+    .where("review_id", id)
+    .first();
+}
+
+async function addDriverReview(review) {
+  const [id] = await db("reviews").insert(review, "id");
+  return getReviewById(id);
 }

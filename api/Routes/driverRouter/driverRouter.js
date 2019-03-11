@@ -28,7 +28,6 @@ router.get("/:id", async (req, res) => {
       const driver = await db.getDriverById(id);
       const rideTotal = await db.getDriverRideTotal(id);
       const reviews = await db.getDriverReviews(id);
-      // TODO: RETRIEVE REVIEWS and add to response
 
       if (!driver) {
         res
@@ -87,6 +86,35 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({
       message: "A network error occurred"
     });
+  }
+});
+
+// ADD DRIVER REVIEW
+
+router.post("/:id/review", async (req, res) => {
+  const { id } = req.params;
+  const { review_content, rating, user_id, driver_id } = req.body;
+  console.log("WORKING");
+
+  if (!review_content || !rating) {
+    res.status(400).json({ message: "Please include a review and rating" });
+  } else if (!user_id || !driver_id) {
+    res.status(400).json({ message: "Please include user and driver ids" });
+  } else {
+    try {
+      const driver = await db.getDriverById(id);
+
+      if (!driver) {
+        res.status(404).json({
+          message: "The driver with the specified ID does not exist"
+        });
+      } else {
+        const review = await db.addDriverReview(req.body);
+        res.status(201).json({ message: "Review added successfully.", review });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "A network error occurred" });
+    }
   }
 });
 

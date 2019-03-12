@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../../../models/drivers/driversModel");
+const Driver = require("../../../models/drivers/driversModel.js");
+const User = require("../../../models/users/usersModel.js");
 
 const {
   restricted,
@@ -12,7 +13,7 @@ const {
 
 router.get("/", async (req, res) => {
   try {
-    const drivers = await db.getDrivers();
+    const drivers = await Driver.getDrivers();
 
     res.status(200).json(drivers);
   } catch (error) {
@@ -31,9 +32,9 @@ router.get("/:id", async (req, res) => {
     });
   } else {
     try {
-      const driver = await db.getDriverById(id);
-      const rideTotal = await db.getDriverRideTotal(id);
-      const reviews = await db.getDriverReviews(id);
+      const driver = await Driver.findDriverByQuery(id);
+      const rideTotal = await Driver.getDriverRideTotal(id);
+      const reviews = await Driver.getDriverReviews(id);
 
       if (!driver) {
         res
@@ -56,11 +57,11 @@ router.put("/:id", restricted, verifyDriver(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const driver = await db.getDriverById(id);
+    const driver = await Driver.findDriverByQuery(id);
     if (!driver) {
       res.status(404).json({ message: "The specified driver does not exist" });
     } else {
-      await db.updateDriver(id, changes);
+      await Driver.updateDriver(id, changes);
       res.status(200).json({
         message: "Update successful"
       });
@@ -75,14 +76,14 @@ router.delete("/:id", restricted, verifyDriver(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const driver = await db.getDriverById(id);
+    const driver = await Driver.findDriverByQuery(id);
 
     if (!driver) {
       res
         .status(404)
         .json({ message: "The driver with the specified ID does not exist" });
     } else {
-      await db.removeDriver(id);
+      await Driver.removeDriver(id);
 
       return res
         .status(200)
@@ -108,18 +109,52 @@ router.post("/:id/review", restricted, verifyUser(), async (req, res) => {
     res.status(400).json({ message: "Please include user and driver ids" });
   } else {
     try {
-      const driver = await db.getDriverById(id);
+      const driver = await Driver.findDriverByQuery(id);
 
       if (!driver) {
         res.status(404).json({
           message: "The driver with the specified ID does not exist"
         });
       } else {
-        const review = await db.addDriverReview(req.body);
+        const review = await Driver.addDriverReview(req.body);
         res.status(201).json({ message: "Review added successfully.", review });
       }
     } catch (error) {
       res.status(500).json({ message: "A network error occurred" });
+    }
+  }
+});
+
+// Add Ride
+
+router.post("/create-ride", async (req, res) => {
+  const { driver_id, user_id } = req.body;
+  const newRide = req.body;
+
+  if (!driver_id || !user_id) {
+    res
+      .status(400)
+      .json({ message: "Driver ID and User ID required to create a ride" });
+  } else {
+    const user = await User.findUserByQuery(user_id);
+    const driver = await Driver.findDriverByQuery(driver_id);
+
+    if (!driver) {
+      res
+        .status(404)
+        .json({ message: "The driver with the specified ID does not exist" });
+    } else if (!user) {
+      res
+        .status(404)
+        .json({ message: "The user with the specified ID does not exist" });
+    } else {
+      try {
+        const ride = await Driver.addRide(newRide);
+
+        res.status(201).json({ message: "Ride successfully created." });
+      } catch (error) {
+        res.status(500).json({ message: "A network error occurred." });
+      }
     }
   }
 });

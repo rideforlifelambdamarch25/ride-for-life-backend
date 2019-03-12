@@ -2,7 +2,7 @@ const db = require("../../data/dbConfig");
 
 module.exports = {
   getUsers,
-  getUserById,
+  findUserByQuery,
   updateUser,
   addUser,
   findUserByQuery,
@@ -22,7 +22,7 @@ function getUsers() {
   );
 }
 
-function getUserById(id) {
+function findUserByQuery(query) {
   return db("users")
     .select(
       "user_id",
@@ -34,27 +34,22 @@ function getUserById(id) {
       "user_type",
       "location"
     )
-    .where("user_id", id)
+    .where("user_id", query)
+    .orWhere("username", query)
+    .orWhere("phone", query)
+    .orWhere("email", query)
     .first();
 }
 
 async function addUser(user) {
   const [id] = await db("users").insert(user, "id");
-  return getUserById(id);
+  return findUserByQuery(id);
 }
 
 function updateUser(id, changes) {
   return db("users")
     .where("user_id", id)
     .update(changes);
-}
-
-function findUserByQuery(query) {
-  return db("users")
-    .where("username", query)
-    .orWhere("phone", query)
-    .orWhere("email", query)
-    .first();
 }
 
 function removeUser(id) {

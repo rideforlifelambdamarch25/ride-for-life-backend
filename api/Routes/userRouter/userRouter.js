@@ -31,7 +31,7 @@ router.get("/:id", async (req, res) => {
     });
   } else {
     try {
-      const user = await db.getUserById(id);
+      const user = await db.findUserByQuery(id);
 
       if (!user) {
         res
@@ -55,7 +55,7 @@ router.put("/:id", restricted, verifyUser(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await db.getUserById(id);
+    const user = await db.findUserByQuery(id);
     if (!user) {
       res.status(404).json({ message: "The specified user does not exist" });
     } else {
@@ -75,7 +75,7 @@ router.delete("/:id", restricted, verifyUser(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await db.getUserById(id);
+    const user = await db.findUserByQuery(id);
 
     if (!user) {
       res

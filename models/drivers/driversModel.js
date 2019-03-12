@@ -2,14 +2,15 @@ const db = require("../../data/dbConfig");
 
 module.exports = {
   getDrivers,
-  getDriverById,
+  findDriverByQuery,
   getDriverRideTotal,
   addDriver,
   removeDriver,
   updateDriver,
   findDriverByQuery,
   getDriverReviews,
-  addDriverReview
+  addDriverReview,
+  addRide
 };
 
 function getDrivers() {
@@ -26,7 +27,7 @@ function getDrivers() {
   );
 }
 
-function getDriverById(id) {
+function findDriverByQuery(query) {
   return db("drivers")
     .select(
       "driver_id",
@@ -38,7 +39,10 @@ function getDriverById(id) {
       "vehicle_type",
       "location"
     )
-    .where("driver_id", id)
+    .where("driver_id", query)
+    .orWhere("username", query)
+    .orWhere("phone", query)
+    .orWhere("email", query)
     .first();
 }
 
@@ -60,7 +64,7 @@ function getDriverReviews(id) {
 async function addDriver(driver) {
   const [id] = await db("drivers").insert(driver, "id");
 
-  return getDriverById(id);
+  return findDriverByQuery(id);
 }
 
 function removeDriver(id) {
@@ -75,14 +79,6 @@ function updateDriver(id, changes) {
     .update(changes);
 }
 
-function findDriverByQuery(query) {
-  return db("drivers")
-    .where("username", query)
-    .orWhere("phone", query)
-    .orWhere("email", query)
-    .first();
-}
-
 function getReviewById(id) {
   return db("reviews")
     .where("review_id", id)
@@ -92,4 +88,16 @@ function getReviewById(id) {
 async function addDriverReview(review) {
   const [id] = await db("reviews").insert(review, "id");
   return getReviewById(id);
+}
+
+function getRideById(id) {
+  return db("rides")
+    .where("ride_id", id)
+    .first();
+}
+
+async function addRide(ride) {
+  const [id] = await db("rides").insert(ride, "id");
+
+  return getRideById(id);
 }

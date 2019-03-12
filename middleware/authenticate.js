@@ -45,7 +45,7 @@ function generateToken(user) {
     payload = {
       subject: user.user_id,
       username: user.username,
-      type: [user.user_type]
+      type: user.user_type
     };
   }
 
@@ -57,7 +57,7 @@ function generateToken(user) {
 }
 
 // Verify user is a driver and allow access to driver only endpoints
-function verifyDriver(type) {
+function verifyDriver() {
   return function(req, res, next) {
     if (req.decoded.type && req.decoded.type === "driver") {
       next();
@@ -68,12 +68,17 @@ function verifyDriver(type) {
 }
 
 // Verify user is a Mother/Caretaker and allow access to user only endpoints
-function verifyUser(type) {
+function verifyUser() {
   return function(req, res, next) {
-    if (req.decodedJwt.type && req.decodedJwt.type.includes(type)) {
-      next();
-    } else {
-      res.status(403).json({ message: "Not Authorized" });
+    if (req.decoded.type) {
+      if (
+        req.decoded.type.includes("caretaker") ||
+        req.decoded.type.includes("mother")
+      ) {
+        next();
+      } else {
+        res.status(403).json({ message: "Not Authorized" });
+      }
     }
   };
 }

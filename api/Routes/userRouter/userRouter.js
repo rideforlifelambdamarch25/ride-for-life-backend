@@ -3,6 +3,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../../models/users/usersModel");
 
+const {
+  restricted,
+  verifyDriver,
+  verifyUser
+} = require("../../../middleware/authenticate");
+
 // GET USER ROUTES
 router.get("/", async (req, res) => {
   try {
@@ -44,7 +50,7 @@ router.get("/:id", async (req, res) => {
 
 // PUT
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", restricted, verifyUser(), async (req, res) => {
   const changes = req.body;
   const { id } = req.params;
 
@@ -65,7 +71,7 @@ router.put("/:id", async (req, res) => {
 
 // DELETE
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", restricted, verifyUser(), async (req, res) => {
   const { id } = req.params;
 
   try {

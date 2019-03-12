@@ -2,6 +2,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../../models/drivers/driversModel");
 
+const {
+  restricted,
+  verifyDriver,
+  verifyUser
+} = require("../../../middleware/authenticate");
+
 // GET ENDPOINTS
 
 router.get("/", async (req, res) => {
@@ -45,7 +51,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // PUT
-router.put("/:id", async (req, res) => {
+router.put("/:id", restricted, verifyDriver(), async (req, res) => {
   const changes = req.body;
   const { id } = req.params;
 
@@ -65,7 +71,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", restricted, verifyDriver(), async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -91,7 +97,7 @@ router.delete("/:id", async (req, res) => {
 
 // ADD DRIVER REVIEW
 
-router.post("/:id/review", async (req, res) => {
+router.post("/:id/review", restricted, verifyUser(), async (req, res) => {
   const { id } = req.params;
   const { review_content, rating, user_id, driver_id } = req.body;
   console.log("WORKING");

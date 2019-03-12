@@ -7,7 +7,7 @@ module.exports = {
   addDriver,
   removeDriver,
   updateDriver,
-  findDriverByUsername,
+  findDriverByQuery,
   getDriverReviews,
   addDriverReview
 };
@@ -75,9 +75,11 @@ function updateDriver(id, changes) {
     .update(changes);
 }
 
-function findDriverByUsername(username) {
+function findDriverByQuery(query) {
   return db("drivers")
-    .where("username", username)
+    .where("username", query)
+    .orWhere("phone", query)
+    .orWhere("email", query)
     .first();
 }
 

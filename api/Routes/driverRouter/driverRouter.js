@@ -2,6 +2,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../../models/drivers/driversModel");
 
+const {
+  restricted,
+  verifyDriver,
+  verifyUser
+} = require("../../../middleware/authenticate");
+
 // GET ENDPOINTS
 
 router.get("/", async (req, res) => {
@@ -27,15 +33,14 @@ router.get("/:id", async (req, res) => {
     try {
       const driver = await db.getDriverById(id);
       const rideTotal = await db.getDriverRideTotal(id);
-
-      // TODO: RETRIEVE REVIEWS and add to response
+      const reviews = await db.getDriverReviews(id);
 
       if (!driver) {
         res
           .status(404)
           .json({ message: "The user with specified ID does not exist" });
       } else {
-        res.status(200).json({ ...driver, ...rideTotal });
+        res.status(200).json({ ...driver, ...rideTotal, reviews });
       }
     } catch (error) {
       res.status(500).json({
@@ -46,7 +51,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // PUT
-router.put("/:id", async (req, res) => {
+router.put("/:id", restricted, verifyDriver(), async (req, res) => {
   const changes = req.body;
   const { id } = req.params;
 
@@ -66,7 +71,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", restricted, verifyDriver(), async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -87,6 +92,35 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({
       message: "A network error occurred"
     });
+  }
+});
+
+// ADD DRIVER REVIEW
+
+router.post("/:id/review", restricted, verifyUser(), async (req, res) => {
+  const { id } = req.params;
+  const { review_content, rating, user_id, driver_id } = req.body;
+  console.log("WORKING");
+
+  if (!review_content || !rating) {
+    res.status(400).json({ message: "Please include a review and rating" });
+  } else if (!user_id || !driver_id) {
+    res.status(400).json({ message: "Please include user and driver ids" });
+  } else {
+    try {
+      const driver = await db.getDriverById(id);
+
+      if (!driver) {
+        res.status(404).json({
+          message: "The driver with the specified ID does not exist"
+        });
+      } else {
+        const review = await db.addDriverReview(req.body);
+        res.status(201).json({ message: "Review added successfully.", review });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "A network error occurred" });
+    }
   }
 });
 

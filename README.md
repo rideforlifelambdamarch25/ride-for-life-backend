@@ -241,6 +241,8 @@ _HTTP method:_ **[GET]**
 
 _Method Url:_ `/api/users/:id`
 
+_Protected Route_ | User Only
+
 _HTTP method:_ **[PUT]**
 
 #### Response
@@ -258,6 +260,8 @@ _HTTP method:_ **[PUT]**
 ## **DELETE USER**
 
 _Method Url:_ `/api/users/:id`
+
+_Protected Route_ | User Only
 
 _HTTP method:_ **[DELETE]**
 
@@ -367,6 +371,8 @@ _HTTP method:_ **[GET]**
 
 _Method Url:_ `/api/drivers/:id/review`
 
+_Protected Route_: User Only
+
 _HTTP method:_ **[POST]**
 
 #### Body
@@ -413,6 +419,8 @@ _example:_
 
 _Method Url:_ `/api/drivers/create-ride`
 
+_Protected Route_
+
 _HTTP method:_ **[POST]**
 
 #### Body
@@ -447,6 +455,8 @@ _example:_
 
 _Method Url:_ `/api/drivers/:id`
 
+_Protected Route_: Driver Only
+
 _HTTP method:_ **[PUT]**
 
 #### Response
@@ -461,9 +471,11 @@ _HTTP method:_ **[PUT]**
 
 ---
 
-## **DELETE Driver**
+## **DELETE DRIVER**
 
 _Method Url:_ `/api/drivers/:id`
+
+_Protected Route_: Driver Only
 
 _HTTP method:_ **[DELETE]**
 

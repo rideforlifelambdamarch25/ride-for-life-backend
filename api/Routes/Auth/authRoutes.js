@@ -25,18 +25,15 @@ router.post("/drivers/register", async (req, res) => {
   const hash = bcrypt.hashSync(password, 12);
   newDriver.password = hash;
 
-  if (
-    !firstname ||
-    !lastname ||
-    !username ||
-    !password ||
-    !phone ||
-    !vehicle_type
-  ) {
+  if (!firstname || !lastname || !username || !password || !vehicle_type) {
     // All required information needed to create a new account
     res
       .status(400)
       .json({ message: "Please include all required information" });
+  } else if (!phone || !email) {
+    res.status(400).json({
+      message: "Please include an email or phone number for registration"
+    });
   } else {
     try {
       const driver = await DriversDb.addDriver(newDriver);
@@ -63,19 +60,24 @@ router.post("/drivers/register", async (req, res) => {
 // DRIVER LOG IN
 
 router.post("/driver/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { loginQuery, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({
-      message: "Please include a username and password"
+  if (!loginQuery) {
+    res.status(400).json({
+      message: "Please include a username, phone number, or email to log in"
+    });
+  } else if (!password) {
+    res.status(400).json({
+      message: "Please include a password to log in."
     });
   } else {
     try {
-      const driver = await DriversDb.findDriverByUsername(username);
+      const driver = await DriversDb.findDriverByQuery(loginQuery);
+
       if (driver && bcrypt.compareSync(password, driver.password)) {
         const token = generateToken(driver);
         res.status(200).json({
-          message: `${username} logged in successfully`,
+          message: `${driver.firstname} logged in successfully`,
           token
         });
       } else {
@@ -106,26 +108,22 @@ router.post("/users/register", async (req, res) => {
   const newUser = req.body;
   const hash = bcrypt.hashSync(password, 12);
   newUser.password = hash;
-  console.log(newUser);
-  if (
-    !firstname ||
-    !lastname ||
-    !username ||
-    !password ||
-    !phone ||
-    !user_type
-  ) {
-    // All required information needed to create a new account
+
+  if (!firstname || !lastname || !username || !password || !user_type) {
+    // All required information needed to create a new user account
     res
       .status(400)
       .json({ message: "Please include all required information" });
+  } else if (!phone || !email) {
+    res.status(400).json({
+      message: "Please include an email or phone number for registration"
+    });
   } else {
     try {
       const user = await UsersDb.addUser(newUser);
 
       if (user) {
         const token = generateToken(newUser);
-        console.log("USER TOKEN", token);
         res.status(201).json({
           message: "Registration Successful",
           user,
@@ -145,19 +143,24 @@ router.post("/users/register", async (req, res) => {
 // USER LOGIN
 
 router.post("/users/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { loginQuery, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({
-      message: "Please include a username and password"
+  if (!loginQuery) {
+    res.status(400).json({
+      message: "Please include a username, phone number, or email to log in"
+    });
+  } else if (!password) {
+    res.status(400).json({
+      message: "Please include a password to log in."
     });
   } else {
     try {
-      const user = await UsersDb.findUserByUsername(username);
+      const user = await UsersDb.findUserByQuery(loginQuery);
+
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = generateToken(user);
         res.status(200).json({
-          message: `${username} logged in successfully`,
+          message: `${user.firstname} logged in successfully`,
           token
         });
       } else {

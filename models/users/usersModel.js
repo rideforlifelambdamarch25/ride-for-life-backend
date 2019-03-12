@@ -5,7 +5,7 @@ module.exports = {
   getUserById,
   updateUser,
   addUser,
-  findUserByUsername,
+  findUserByQuery,
   removeUser
 };
 
@@ -49,9 +49,11 @@ function updateUser(id, changes) {
     .update(changes);
 }
 
-function findUserByUsername(username) {
+function findUserByQuery(query) {
   return db("users")
-    .where("username", username)
+    .where("username", query)
+    .orWhere("phone", query)
+    .orWhere("email", query)
     .first();
 }
 

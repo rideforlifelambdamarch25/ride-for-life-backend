@@ -134,16 +134,16 @@ _HTTP method:_ **[POST]**
 
 #### Body
 
-| name       | type   | required | description                                                           |
-| ---------- | ------ | -------- | --------------------------------------------------------------------- |
-| `username` | String | Yes      | Must match a username in the database                                 |
-| `password` | String | Yes      | Must match a password in the database corresponding to above username |
+| name             | type   | required | description                                                           |
+| ---------------- | ------ | -------- | --------------------------------------------------------------------- |
+| `userLoginQuery` | String | Yes      | Must match a username, phone number, or email in the database         |
+| `password`       | String | Yes      | Must match a password in the database corresponding to above username |
 
 _example:_
 
 ```
 {
-  username: "steph_30",
+  userLoginQuery: "steph_30",
   password: "password"
 }
 ```
@@ -156,8 +156,8 @@ _example:_
 
 ```
 {
-    "message": "steph_30 logged in successfully",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxMCwidXNlcm5hbWUiOiJzdGVwaF8zMCIsInR5cGUiOiJkcml2ZXIiLCJpYXQiOjE1NTIzODExMDcsImV4cCI6MTU1MjQ2NzUwN30.whZamUa3z-kXZrYowa3tTkpcWAwAxYiE13hrcrV4Xrc"
+    "message": "Steph logged in successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxMCwidXNlcm5hbWUiOiJzdGVwaF8zMCIsInR5cGUiOiJkcml2ZXIiLCJpYXQiOjE1NTI0MjE0ODUsImV4cCI6MTU1MjUwNzg4NX0.CDUFFKWBJfYSUIckaVhwJh1jUV26tGBQXRWaZwly-Ic"
 }
 ```
 

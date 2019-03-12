@@ -127,7 +127,7 @@ router.post("/:id/review", restricted, verifyUser(), async (req, res) => {
 
 // Add Ride
 
-router.post("/create-ride", async (req, res) => {
+router.post("/create-ride", restricted, async (req, res) => {
   const { driver_id, user_id } = req.body;
   const newRide = req.body;
 

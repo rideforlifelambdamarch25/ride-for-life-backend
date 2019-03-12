@@ -55,12 +55,12 @@ router.put("/:id", restricted, verifyUser(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = db.getUserById(id);
+    const user = await db.getUserById(id);
     if (!user) {
       res.status(404).json({ message: "The specified user does not exist" });
     } else {
       await db.updateUser(id, changes);
-      res.status(200).json({
+      res.status(202).json({
         message: "Update successful"
       });
     }
@@ -85,7 +85,7 @@ router.delete("/:id", restricted, verifyUser(), async (req, res) => {
       await db.removeUser(id);
 
       return res
-        .status(200)
+        .status(202)
         .json({ message: "User account removed successfully" });
     }
   } catch (error) {

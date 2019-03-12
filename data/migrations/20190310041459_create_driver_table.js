@@ -18,11 +18,7 @@ exports.up = function(knex, Promise) {
 
     tbl.string("email", 255).unique();
 
-    tbl
-      .integer("phone")
-      .unsigned()
-      .notNullable()
-      .unique();
+    tbl.string("phone").unique();
 
     tbl.string("vehicle_type", 80).notNullable();
 

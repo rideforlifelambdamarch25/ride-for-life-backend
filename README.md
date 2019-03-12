@@ -19,7 +19,7 @@ _HTTP method:_ **[POST]**
 | `username`     | String  | Yes      | Must be unique |
 | `password`     | String  | Yes      |                |
 | `email`        | String  | No       | Must be unique |
-| `phone`        | Integer | Yes      | Must be unique |
+| `phone`        | String  | Yes      | Must be unique |
 | `vehicle_type` | String  | Yes      |                |
 | `location`     | String  | No       |                |
 | `price`        | Integer | No       |                |
@@ -73,16 +73,16 @@ _HTTP method:_ **[POST]**
 
 #### Body
 
-| name        | type    | required | description                     |
-| ----------- | ------- | -------- | ------------------------------- |
-| `firstname` | String  | Yes      |                                 |
-| `lastname`  | String  | Yes      |                                 |
-| `username`  | String  | Yes      | Must be unique                  |
-| `password`  | String  | Yes      |                                 |
-| `email`     | String  | No       | Must be unique                  |
-| `phone`     | Integer | Yes      | Must be unique                  |
-| `user_type` | String  | Yes      | Must be 'caretaker' or 'mother' |
-| `location`  | String  | No       |                                 |
+| name        | type   | required | description                     |
+| ----------- | ------ | -------- | ------------------------------- |
+| `firstname` | String | Yes      |                                 |
+| `lastname`  | String | Yes      |                                 |
+| `username`  | String | Yes      | Must be unique                  |
+| `password`  | String | Yes      |                                 |
+| `email`     | String | No       | Must be unique                  |
+| `phone`     | String | Yes      | Must be unique                  |
+| `user_type` | String | Yes      | Must be 'caretaker' or 'mother' |
+| `location`  | String | No       |                                 |
 
 _example:_
 
@@ -404,6 +404,40 @@ _example:_
         "driver_id": 2,
         "created_at": "2019-03-12 09:17:50"
     }
+}
+```
+
+---
+
+## **ADD A RIDE**
+
+_Method Url:_ `/api/drivers/create-ride`
+
+_HTTP method:_ **[POST]**
+
+#### Body
+
+| name        | type    | required |
+| ----------- | ------- | -------- |
+| `user_id`   | Integer | Yes      |
+| `driver_id` | Integer | Yes      |
+
+_example:_
+
+```
+{
+	"user_id": 1,
+	"driver_id": 2,
+}
+```
+
+#### Response
+
+##### 201 (Created)
+
+```
+{
+  "message": "Ride successfully created."
 }
 ```
 

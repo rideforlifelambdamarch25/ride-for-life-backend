@@ -68,22 +68,26 @@ async function addDriver(driver) {
   return getDriverById(id);
 }
 
+// function getDriverById(id) {
+//   return db("drivers")
+//     .select(
+//       "driver_id",
+//       "firstname",
+//       "lastname",
+//       "username",
+//       "email",
+//       "phone",
+//       "vehicle_type",
+//       "location"
+//     )
+//     .where("driver_id", id)
+//     .first();
+// }
+
 function getDriverById(id) {
-  return (
-    db("drivers")
-      // .select(
-      //   "driver_id",
-      //   "firstname",
-      //   "lastname",
-      //   "username",
-      //   "email",
-      //   "phone",
-      //   "vehicle_type",
-      //   "location"
-      // )
-      .where("driver_id", id)
-      .first()
-  );
+  return db("drivers")
+    .where("driver_id", id)
+    .first();
 }
 
 function removeDriver(id) {

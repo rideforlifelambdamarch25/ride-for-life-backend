@@ -41,14 +41,13 @@ function findDriverByQuery(query) {
       "location",
       "password"
     )
-    .where("driver_id", query)
-    .orWhere("username", query)
+    .where("username", query)
     .orWhere("phone", query)
     .orWhere("email", query)
     .first();
 }
 
-function getDriverById(query) {
+function getDriverById(id) {
   return db("drivers")
     .select(
       "driver_id",
@@ -60,10 +59,7 @@ function getDriverById(query) {
       "vehicle_type",
       "location"
     )
-    .where("driver_id", query)
-    .orWhere("username", query)
-    .orWhere("phone", query)
-    .orWhere("email", query)
+    .where("driver_id", id)
     .first();
 }
 

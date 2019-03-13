@@ -73,18 +73,20 @@ router.post("/drivers/login", async (req, res) => {
   } else {
     try {
       const driver = await DriversDb.findDriverByQuery(loginQuery);
-    
+
+      console.log('DRIVER', driver)
       if (driver && bcrypt.compareSync(password, driver.password)) {
         const token = generateToken(driver);
         console.log(password)
         console.log(token)
+        
         res.status(200).json({
           message: `${driver.firstname} logged in successfully`,
           token
         });
       } else {
         res.status(404).json({
-          message: "The user with the specified username could not be found"
+          message: "The driver could not be found"
         });
       }
     } catch (error) {

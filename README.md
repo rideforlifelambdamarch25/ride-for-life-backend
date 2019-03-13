@@ -49,16 +49,6 @@ _example:_
 ```
 {
     "message": "Registration Successful",
-    "driver": {
-        "driver_id": 10,
-        "firstname": "Steph",
-        "lastname": "Curry",
-        "username": "steph_30",
-        "email": "steph@email.com",
-        "phone": 432678768,
-        "vehicle_type": "car",
-        "location": "54.5468, 45.5644"
-    },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0ZXBoXzMwIiwiaWF0IjoxNTUyMzgwMzk1LCJleHAiOjE1NTI0NjY3OTV9.aKCf8zNXcq40A1bRR8Nvh-Qf_EtpTDXc7WC9R_66CeY"
 }
 ```

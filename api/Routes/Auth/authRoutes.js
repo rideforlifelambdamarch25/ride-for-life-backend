@@ -40,11 +40,11 @@ router.post("/drivers/register", async (req, res) => {
       const driver = await DriversDb.addDriver(newDriver);
       console.log(driver);
       const token = generateToken(newDriver);
-
+      console.log(token);
       if (driver) {
         res.status(201).json({
           message: "Registration Successful",
-          driver,
+          // driver,
           token
         });
       } else {

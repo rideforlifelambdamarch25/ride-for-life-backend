@@ -78,10 +78,16 @@ function getDriverReviews(id) {
     .where("drivers.driver_id", id);
 }
 
-async function addDriver(driver) {
-  const [id] = await db("drivers").insert(driver);
+// async function addDriver(driver) {
+//   const [id] = await db("drivers").insert(driver);
 
-  return getDriverById(id);
+//   return getDriverById(id);
+// }
+
+function addDriver(driver) {
+  return db("drivers").insert(driver);
+
+  // return getDriverById(id);
 }
 
 function removeDriver(id) {

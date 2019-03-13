@@ -62,30 +62,28 @@ function getDriverReviews(id) {
     .where("drivers.driver_id", id);
 }
 
-async function addDriver(driver) {
-  const [id] = await db("drivers").insert(driver);
+// async function addDriver(driver) {
+//   const [id] = await db("drivers").insert(driver);
 
-  return getDriverById(id);
-}
-
-// function getDriverById(id) {
-//   return db("drivers")
-//     .select(
-//       "driver_id",
-//       "firstname",
-//       "lastname",
-//       "username",
-//       "email",
-//       "phone",
-//       "vehicle_type",
-//       "location"
-//     )
-//     .where("driver_id", id)
-//     .first();
+//   return getDriverById(id);
 // }
+
+function addDriver(driver) {
+  return db("drivers").insert(driver);
+}
 
 function getDriverById(id) {
   return db("drivers")
+    .select(
+      "driver_id",
+      "firstname",
+      "lastname",
+      "username",
+      "email",
+      "phone",
+      "vehicle_type",
+      "location"
+    )
     .where("driver_id", id)
     .first();
 }

@@ -37,21 +37,28 @@ router.post("/drivers/register", async (req, res) => {
     });
   } else {
     try {
-      const driver = await DriversDb.addDriver(newDriver);
-      console.log(driver);
+      // const driver = await DriversDb.addDriver(newDriver);
+      await DriversDb.addDriver(newDriver);
+      // console.log(driver);
       const token = generateToken(newDriver);
       console.log(token);
-      if (driver) {
-        res.status(201).json({
-          message: "Registration Successful",
-          driver,
-          token
-        });
-      } else {
-        res
-          .status(400)
-          .json({ message: "There was an error registering your account" });
-      }
+
+      res.status(201).json({
+        message: "Registration Successful",
+        token
+      });
+
+      // if (driver) {
+      //   res.status(201).json({
+      //     message: "Registration Successful",
+      //     driver,
+      //     token
+      //   });
+      // } else {
+      //   res
+      //     .status(400)
+      //     .json({ message: "There was an error registering your account" });
+      // }
     } catch (error) {
       res.status(500).json({ message: "A network error occurred" });
     }

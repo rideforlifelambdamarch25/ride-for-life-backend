@@ -44,7 +44,7 @@ router.post("/drivers/register", async (req, res) => {
       if (driver) {
         res.status(201).json({
           message: "Registration Successful",
-          // driver,
+          driver,
           token
         });
       } else {

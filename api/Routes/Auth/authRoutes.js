@@ -24,7 +24,7 @@ router.post("/drivers/register", async (req, res) => {
   const newDriver = req.body;
   const hash = bcrypt.hashSync(password, 12);
   newDriver.password = hash;
-
+  console.log("NEW DRIVER", newDriver);
   if (!firstname || !lastname || !username || !password || !vehicle_type) {
     // All required information needed to create a new account
     res
@@ -37,7 +37,7 @@ router.post("/drivers/register", async (req, res) => {
   } else {
     try {
       const driver = await DriversDb.addDriver(newDriver);
-
+      console.log(driver);
       if (driver) {
         const token = generateToken(newDriver);
 
@@ -74,12 +74,12 @@ router.post("/drivers/login", async (req, res) => {
     try {
       const driver = await DriversDb.findDriverByQuery(loginQuery);
 
-      console.log('DRIVER', driver)
+      console.log("DRIVER", driver);
       if (driver && bcrypt.compareSync(password, driver.password)) {
         const token = generateToken(driver);
-        console.log(password)
-        console.log(token)
-        
+        console.log(password);
+        console.log(token);
+
         res.status(200).json({
           message: `${driver.firstname} logged in successfully`,
           token

@@ -81,7 +81,7 @@ function getDriverReviews(id) {
 async function addDriver(driver) {
   const [id] = await db("drivers").insert(driver, "id");
 
-  return findDriverByQuery(id);
+  return getDriverById(id);
 }
 
 function removeDriver(id) {

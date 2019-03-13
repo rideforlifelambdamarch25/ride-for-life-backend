@@ -10,7 +10,8 @@ module.exports = {
   findDriverByQuery,
   getDriverReviews,
   addDriverReview,
-  addRide
+  addRide,
+  getDriverById
 };
 
 function getDrivers() {
@@ -28,6 +29,26 @@ function getDrivers() {
 }
 
 function findDriverByQuery(query) {
+  return db("drivers")
+    .select(
+      "driver_id",
+      "firstname",
+      "lastname",
+      "username",
+      "email",
+      "phone",
+      "vehicle_type",
+      "location",
+      "password"
+    )
+    .where("driver_id", query)
+    .orWhere("username", query)
+    .orWhere("phone", query)
+    .orWhere("email", query)
+    .first();
+}
+
+function getDriverById(query) {
   return db("drivers")
     .select(
       "driver_id",

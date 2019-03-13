@@ -59,7 +59,7 @@ router.post("/drivers/register", async (req, res) => {
 
 // DRIVER LOG IN
 
-router.post("/driver/login", async (req, res) => {
+router.post("/drivers/login", async (req, res) => {
   const { loginQuery, password } = req.body;
 
   if (!loginQuery) {
@@ -73,9 +73,11 @@ router.post("/driver/login", async (req, res) => {
   } else {
     try {
       const driver = await DriversDb.findDriverByQuery(loginQuery);
-
+    
       if (driver && bcrypt.compareSync(password, driver.password)) {
         const token = generateToken(driver);
+        console.log(password)
+        console.log(token)
         res.status(200).json({
           message: `${driver.firstname} logged in successfully`,
           token

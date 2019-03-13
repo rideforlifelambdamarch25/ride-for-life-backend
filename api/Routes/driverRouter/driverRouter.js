@@ -32,7 +32,7 @@ router.get("/:id", async (req, res) => {
     });
   } else {
     try {
-      const driver = await Driver.findDriverByQuery(id);
+      const driver = await Driver.getDriverById(id);
       const rideTotal = await Driver.getDriverRideTotal(id);
       const reviews = await Driver.getDriverReviews(id);
 
@@ -57,7 +57,7 @@ router.put("/:id", restricted, verifyDriver(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const driver = await Driver.findDriverByQuery(id);
+    const driver = await Driver.getDriverById(id);
     if (!driver) {
       res.status(404).json({ message: "The specified driver does not exist" });
     } else {
@@ -76,7 +76,7 @@ router.delete("/:id", restricted, verifyDriver(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const driver = await Driver.findDriverByQuery(id);
+    const driver = await Driver.getDriverById(id);
 
     if (!driver) {
       res
@@ -109,7 +109,7 @@ router.post("/:id/review", restricted, verifyUser(), async (req, res) => {
     res.status(400).json({ message: "Please include user and driver ids" });
   } else {
     try {
-      const driver = await Driver.findDriverByQuery(id);
+      const driver = await Driver.getDriverById(id);
 
       if (!driver) {
         res.status(404).json({
@@ -137,7 +137,7 @@ router.post("/create-ride", restricted, async (req, res) => {
       .json({ message: "Driver ID and User ID required to create a ride" });
   } else {
     const user = await User.findUserByQuery(user_id);
-    const driver = await Driver.findDriverByQuery(driver_id);
+    const driver = await Driver.getDriverById(driver_id);
 
     if (!driver) {
       res

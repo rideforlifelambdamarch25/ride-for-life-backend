@@ -336,21 +336,23 @@ _HTTP method:_ **[POST]**
 
 #### Body
 
-| name             | type    | required |
-| ---------------- | ------- | -------- |
-| `user_id`        | Integer | No       |
-| `driver_id`      | Integer | Yes      |
-| `review_content` | String  | No       |
-| `rating`         | Integer | No       |
+| name             | type    | required                |
+| ---------------- | ------- | ----------------------- |
+| `user_id`        | Integer | No                      |
+| `driver_id`      | Integer | Yes (Added Dynamically) |
+| `ride_id`        | Integer | Yes                     |
+| `review_content` | String  | No                      |
+| `rating`         | Integer | No                      |
 
 _example:_
 
 ```
 {
+	"ride_id": 1,
 	"user_id": 1,
-	"driver_id": 2,
-	"review_content": "Id est prima erant nobis. Ut odio alia mediocritatem mel.",
+	"review_content": "This is a new review",
 	"rating": 3
+
 }
 ```
 
@@ -362,12 +364,13 @@ _example:_
 {
     "message": "Review added successfully.",
     "review": {
-        "review_id": 10,
-        "review_content": "Id est prima erant nobis. Ut odio alia mediocritatem mel. Cum quis assum id. At mel prima labore, no hendrerit liberavisse vim.",
+        "review_id": 16,
+        "review_content": "This is a new review",
         "rating": 3,
         "user_id": 1,
-        "driver_id": 2,
-        "created_at": "2019-03-12 09:17:50"
+        "driver_id": 1,
+        "ride_id": 1,
+        "created_at": "2019-03-14T08:32:30.885Z"
     }
 }
 ```

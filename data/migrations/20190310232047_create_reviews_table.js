@@ -5,8 +5,11 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .primary();
 
-    tbl.string("review_content", 255);
-    tbl.integer("rating").unsigned();
+    tbl.string("review_content", 255).defaultTo(null);
+    tbl
+      .integer("rating")
+      .unsigned()
+      .defaultTo(null);
 
     tbl.integer("user_id").unsigned();
     tbl
@@ -23,6 +26,16 @@ exports.up = function(knex, Promise) {
       .foreign("driver_id")
       .references("driver_id")
       .inTable("drivers")
+      .onDelete("CASCADE");
+
+    tbl
+      .integer("ride_id")
+      .unsigned()
+      .notNullable();
+    tbl
+      .foreign("ride_id")
+      .references("ride_id")
+      .inTable("rides")
       .onDelete("CASCADE");
 
     tbl.timestamp("created_at").defaultTo(knex.fn.now());

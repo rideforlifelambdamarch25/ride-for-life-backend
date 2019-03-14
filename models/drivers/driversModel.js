@@ -13,7 +13,9 @@ module.exports = {
   addRide,
   getDriverById,
   getRides,
-  getRideById
+  getRideById,
+  getReviews,
+  getReviewById
 };
 
 function getDrivers() {
@@ -110,6 +112,10 @@ function getReviewById(id) {
     .first();
 }
 
+function getReviews() {
+  return db("reviews");
+}
+
 async function addDriverReview(review) {
   return db("reviews").insert(review);
 }
@@ -121,11 +127,9 @@ function getRideById(id) {
 }
 
 function getRides() {
-  return db("rides");
+  return db("rides").orderBy("ride_id");
 }
 
 async function addRide(ride) {
-  await db("rides").insert(ride);
-
-  return getRideById(ride.driver_id);
+  return db("rides").insert(ride);
 }

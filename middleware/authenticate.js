@@ -45,7 +45,7 @@ function generateToken(user) {
     payload = {
       subject: user.user_id,
       username: user.username,
-      type: user.user_type
+      type: "user"
     };
   }
 
@@ -71,10 +71,7 @@ function verifyDriver() {
 function verifyUser() {
   return function(req, res, next) {
     if (req.decoded.type) {
-      if (
-        req.decoded.type.includes("caretaker") ||
-        req.decoded.type.includes("mother")
-      ) {
+      if (req.decoded.type.includes("user")) {
         next();
       } else {
         res.status(403).json({ message: "Not Authorized" });

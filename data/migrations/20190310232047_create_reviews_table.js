@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .primary();
 
-    tbl.string("review_content", 255).notNullable();
+    tbl.string("review_content", 255);
     tbl.integer("rating").unsigned();
 
     tbl.integer("user_id").unsigned();
@@ -15,7 +15,10 @@ exports.up = function(knex, Promise) {
       .inTable("users")
       .onDelete("CASCADE");
 
-    tbl.integer("driver_id").unsigned();
+    tbl
+      .integer("driver_id")
+      .unsigned()
+      .notNullable();
     tbl
       .foreign("driver_id")
       .references("driver_id")

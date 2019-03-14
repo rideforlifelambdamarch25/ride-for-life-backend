@@ -24,7 +24,6 @@ router.post("/drivers/register", async (req, res) => {
   const newDriver = req.body;
   const hash = bcrypt.hashSync(password, 12);
   newDriver.password = hash;
-  console.log("NEW DRIVER", newDriver);
 
   if (!firstname || !lastname || !username || !password || !vehicle_type) {
     // All required information needed to create a new account
@@ -39,26 +38,12 @@ router.post("/drivers/register", async (req, res) => {
     try {
       // const driver = await DriversDb.addDriver(newDriver);
       await DriversDb.addDriver(newDriver);
-      // console.log(driver);
       const token = generateToken(newDriver);
-      console.log(token);
 
       res.status(201).json({
         message: "Registration Successful",
         token
       });
-
-      // if (driver) {
-      //   res.status(201).json({
-      //     message: "Registration Successful",
-      //     driver,
-      //     token
-      //   });
-      // } else {
-      //   res
-      //     .status(400)
-      //     .json({ message: "There was an error registering your account" });
-      // }
     } catch (error) {
       res.status(500).json({ message: "A network error occurred" });
     }

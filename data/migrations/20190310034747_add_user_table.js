@@ -5,14 +5,14 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .primary();
 
-    tbl.string("firstname", 255).notNullable();
+    tbl.string("firstname", 255).defaultTo(null);
 
     tbl
       .string("phone")
       .notNullable()
       .unique();
 
-    tbl.string("location", 255);
+    tbl.string("location", 255).defaultTo(null);
   });
 };
 

@@ -36,21 +36,14 @@ router.post("/drivers/register", async (req, res) => {
     });
   } else {
     try {
-      const driver = await DriversDb.addDriver(newDriver);
+      // const driver = await DriversDb.addDriver(newDriver);
+      await DriversDb.addDriver(newDriver);
+      const token = generateToken(newDriver);
 
-      if (driver) {
-        const token = generateToken(newDriver);
-
-        res.status(201).json({
-          message: "Registration Successful",
-          driver,
-          token
-        });
-      } else {
-        res
-          .status(400)
-          .json({ message: "There was an error registering your account" });
-      }
+      res.status(201).json({
+        message: "Registration Successful",
+        token
+      });
     } catch (error) {
       res.status(500).json({ message: "A network error occurred" });
     }
@@ -59,7 +52,7 @@ router.post("/drivers/register", async (req, res) => {
 
 // DRIVER LOG IN
 
-router.post("/driver/login", async (req, res) => {
+router.post("/drivers/login", async (req, res) => {
   const { loginQuery, password } = req.body;
 
   if (!loginQuery) {
@@ -74,15 +67,19 @@ router.post("/driver/login", async (req, res) => {
     try {
       const driver = await DriversDb.findDriverByQuery(loginQuery);
 
+      console.log("DRIVER", driver);
       if (driver && bcrypt.compareSync(password, driver.password)) {
         const token = generateToken(driver);
+        console.log(password);
+        console.log(token);
+
         res.status(200).json({
           message: `${driver.firstname} logged in successfully`,
           token
         });
       } else {
         res.status(404).json({
-          message: "The user with the specified username could not be found"
+          message: "The driver could not be found"
         });
       }
     } catch (error) {

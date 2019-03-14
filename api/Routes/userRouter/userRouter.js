@@ -11,9 +11,10 @@ const {
 
 // GET USER ROUTES
 router.get("/", async (req, res) => {
+  console.log("WORKING");
   try {
     const users = await db.getUsers();
-
+    console.log("USERS", users);
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({

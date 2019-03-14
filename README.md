@@ -49,16 +49,6 @@ _example:_
 ```
 {
     "message": "Registration Successful",
-    "driver": {
-        "driver_id": 10,
-        "firstname": "Steph",
-        "lastname": "Curry",
-        "username": "steph_30",
-        "email": "steph@email.com",
-        "phone": 432678768,
-        "vehicle_type": "car",
-        "location": "54.5468, 45.5644"
-    },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0ZXBoXzMwIiwiaWF0IjoxNTUyMzgwMzk1LCJleHAiOjE1NTI0NjY3OTV9.aKCf8zNXcq40A1bRR8Nvh-Qf_EtpTDXc7WC9R_66CeY"
 }
 ```
@@ -73,30 +63,19 @@ _HTTP method:_ **[POST]**
 
 #### Body
 
-| name        | type   | required | description                     |
-| ----------- | ------ | -------- | ------------------------------- |
-| `firstname` | String | Yes      |                                 |
-| `lastname`  | String | Yes      |                                 |
-| `username`  | String | Yes      | Must be unique                  |
-| `password`  | String | Yes      |                                 |
-| `email`     | String | No       | Must be unique                  |
-| `phone`     | String | Yes      | Must be unique                  |
-| `user_type` | String | Yes      | Must be 'caretaker' or 'mother' |
-| `location`  | String | No       |                                 |
+| name        | type   | required | description    |
+| ----------- | ------ | -------- | -------------- |
+| `firstname` | String | No       |                |
+| `phone`     | String | Yes      | Must be unique |
+| `location`  | String | No       |                |
 
 _example:_
 
 ```
 {
           firstname: "Minnie",
-          lastname: "Mouse",
-          phone: 3245665432,
-          user_type: "mother",
+          phone: "3245665432",
           location: "0.328972, 32.574276",
-          username: "minnie_2393",
-          password: "password",
-          email: minnie@email.com,
-          price: 100
         }
 ```
 
@@ -112,11 +91,7 @@ _example:_
     "user": {
         "user_id": 8,
         "firstname": "Minnie",
-        "lastname": "Mouse",
-        "username": "newusername",
-        "email": "minnie@email.com",
         "phone": 2223355435,
-        "user_type": "mother",
         "location": "54.5468, 45.5644"
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld3VzZXJuYW1lIiwidHlwZSI6Im1vdGhlciIsImlhdCI6MTU1MjM4MDc4NiwiZXhwIjoxNTUyNDY3MTg2fQ.ejsVbLjfPvuW-rJ70RyhDPyGu4GbLY8gFSwXRUXoubU"
@@ -180,31 +155,19 @@ _HTTP method:_ **[GET]**
     {
         "user_id": 1,
         "firstname": "Tracy",
-        "lastname": "Zboncak",
-        "username": "Dayton64",
-        "email": "Trace_Reilly50@gmail.com",
         "phone": "1-485-911-3004",
-        "user_type": "mother",
         "location": "-24.2511, -39.4241"
     },
     {
         "user_id": 2,
         "firstname": "Lisa",
-        "lastname": "Wilkinson",
-        "username": "Abe9",
-        "email": "Juwan.Altenwerth@hotmail.com",
         "phone": "695.154.7255 x77744",
-        "user_type": "mother",
         "location": "31.9658, 98.2388"
     },
     {
         "user_id": 3,
         "firstname": "Rachel",
-        "lastname": "Beatty",
-        "username": "Claire.OKon81",
-        "email": "Anissa_Parker@hotmail.com",
         "phone": "167-347-5242",
-        "user_type": "mother",
         "location": "-66.7115, -38.2318"
     }
 ]
@@ -226,11 +189,7 @@ _HTTP method:_ **[GET]**
     {
     "user_id": 3,
     "firstname": "Rachel",
-    "lastname": "Beatty",
-    "username": "Claire.OKon81",
-    "email": "Anissa_Parker@hotmail.com",
     "phone": "167-347-5242",
-    "user_type": "mother",
     "location": "-66.7115, -38.2318"
 }
 ```
@@ -379,10 +338,10 @@ _HTTP method:_ **[POST]**
 
 | name             | type    | required |
 | ---------------- | ------- | -------- |
-| `user_id`        | Integer | Yes      |
+| `user_id`        | Integer | No       |
 | `driver_id`      | Integer | Yes      |
-| `review_content` | String  | Yes      |
-| `rating`         | Integer | Yes      |
+| `review_content` | String  | No       |
+| `rating`         | Integer | No       |
 
 _example:_
 
@@ -415,7 +374,7 @@ _example:_
 
 ---
 
-## **ADD A RIDE**
+## **CREATE A RIDE**
 
 _Method Url:_ `/api/drivers/create-ride`
 
@@ -425,10 +384,14 @@ _HTTP method:_ **[POST]**
 
 #### Body
 
-| name        | type    | required |
-| ----------- | ------- | -------- |
-| `user_id`   | Integer | Yes      |
-| `driver_id` | Integer | Yes      |
+| name             | type    | required |
+| ---------------- | ------- | -------- |
+| `user_id`        | Integer | No       |
+| `driver_id`      | Integer | Yes      |
+| `user_phone`     | String  | Yes      |
+| `first_name`     | String  | No       |
+| `start_location` | String  | No       |
+| `end_location`   | String  | NO       |
 
 _example:_
 
@@ -436,6 +399,13 @@ _example:_
 {
 	"user_id": 1,
 	"driver_id": 2,
+}
+
+or
+
+{
+    "user_phone": "4328990987",
+    "driver_id": 2
 }
 ```
 
@@ -445,7 +415,15 @@ _example:_
 
 ```
 {
-  "message": "Ride successfully created."
+    "message": "Ride successfully created.",
+    "ride": {
+        "ride_id": 10,
+        "user_id": 2,
+        "driver_id": 1,
+        "start_location": null,
+        "end_location": null,
+        "created_at": "2019-03-14 01:49:26"
+    }
 }
 ```
 

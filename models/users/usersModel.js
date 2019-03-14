@@ -10,34 +10,15 @@ module.exports = {
 };
 
 function getUsers() {
-  return db("users").select(
-    "user_id",
-    "firstname",
-    "lastname",
-    "username",
-    "email",
-    "phone",
-    "user_type",
-    "location"
-  );
+  return db("users").select("user_id", "firstname", "phone", "location");
 }
 
 function findUserByQuery(query) {
   return db("users")
-    .select(
-      "user_id",
-      "firstname",
-      "lastname",
-      "username",
-      "email",
-      "phone",
-      "user_type",
-      "location"
-    )
+    .select("user_id", "firstname", "phone")
     .where("user_id", query)
-    .orWhere("username", query)
     .orWhere("phone", query)
-    .orWhere("email", query)
+
     .first();
 }
 

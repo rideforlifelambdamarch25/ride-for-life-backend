@@ -10,7 +10,8 @@ module.exports = {
   findDriverByQuery,
   getDriverReviews,
   addDriverReview,
-  addRide
+  addRide,
+  getDriverById
 };
 
 function getDrivers() {
@@ -37,10 +38,10 @@ function findDriverByQuery(query) {
       "email",
       "phone",
       "vehicle_type",
-      "location"
+      "location",
+      "password"
     )
-    .where("driver_id", query)
-    .orWhere("username", query)
+    .where("username", query)
     .orWhere("phone", query)
     .orWhere("email", query)
     .first();
@@ -61,10 +62,30 @@ function getDriverReviews(id) {
     .where("drivers.driver_id", id);
 }
 
-async function addDriver(driver) {
-  const [id] = await db("drivers").insert(driver, "id");
+// async function addDriver(driver) {
+//   const [id] = await db("drivers").insert(driver);
 
-  return findDriverByQuery(id);
+//   return getDriverById(id);
+// }
+
+function addDriver(driver) {
+  return db("drivers").insert(driver);
+}
+
+function getDriverById(id) {
+  return db("drivers")
+    .select(
+      "driver_id",
+      "firstname",
+      "lastname",
+      "username",
+      "email",
+      "phone",
+      "vehicle_type",
+      "location"
+    )
+    .where("driver_id", id)
+    .first();
 }
 
 function removeDriver(id) {

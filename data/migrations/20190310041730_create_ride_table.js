@@ -12,7 +12,10 @@ exports.up = function(knex, Promise) {
       .inTable("users")
       .onDelete("CASCADE");
 
-    tbl.integer("driver_id").unsigned();
+    tbl
+      .integer("driver_id")
+      .notNullable()
+      .unsigned();
     tbl
       .foreign("driver_id")
       .references("driver_id")

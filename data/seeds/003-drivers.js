@@ -9,15 +9,15 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex("drivers").insert([
         {
-          firstname: fake.name.firstName(),
-          lastname: fake.name.lastName(),
-          phone: fake.phone.phoneNumber(),
+          firstname: "Steph",
+          lastname: "Curry",
+          phone: "3235465879",
           vehicle_type: "motorcycle",
-          location: `${fake.address.latitude()}, ${fake.address.longitude()}`,
-          username: fake.internet.userName(),
+          location: `"21.2364, 21.8143"`,
+          username: "splash_30",
           password: bcrypt.hashSync("password", 12),
-          email: fake.internet.email(),
-          price: fake.random.number(200)
+          email: "gsw30@gsw.com",
+          price: 120
         },
         {
           firstname: fake.name.firstName(),

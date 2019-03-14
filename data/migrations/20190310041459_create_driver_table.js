@@ -16,7 +16,10 @@ exports.up = function(knex, Promise) {
 
     tbl.string("password", 255).notNullable();
 
-    tbl.string("email", 255).unique();
+    tbl
+      .string("email", 255)
+      .unique()
+      .defaultTo(null);
 
     tbl
       .string("phone")
@@ -25,9 +28,12 @@ exports.up = function(knex, Promise) {
 
     tbl.string("vehicle_type", 80).notNullable();
 
-    tbl.string("location", 255);
+    tbl.string("location", 255).defaultTo(null);
 
-    tbl.integer("price").unsigned();
+    tbl
+      .integer("price")
+      .unsigned()
+      .defaultTo(null);
   });
 };
 

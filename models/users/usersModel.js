@@ -16,15 +16,15 @@ function getUsers() {
 function findUserByQuery(query) {
   return db("users")
     .select("user_id", "firstname", "phone")
-    .where("user_id", query)
-    .orWhere("phone", query)
+    .where("phone", query)
 
     .first();
 }
 
 async function addUser(user) {
-  const [id] = await db("users").insert(user, "id");
-  return findUserByQuery(id);
+  // const id = await db("users").insert(user, "id");
+  return db("users").insert(user);
+  // return findUserByQuery(id);
 }
 
 function updateUser(id, changes) {

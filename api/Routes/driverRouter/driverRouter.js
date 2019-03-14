@@ -6,7 +6,8 @@ const User = require("../../../models/users/usersModel.js");
 const {
   restricted,
   verifyDriver,
-  verifyUser
+  verifyUser,
+  generateToken
 } = require("../../../middleware/authenticate");
 
 // GET ENDPOINTS
@@ -99,35 +100,62 @@ router.delete("/:id", restricted, verifyDriver(), async (req, res) => {
 // ADD DRIVER REVIEW
 
 router.post("/:id/review", restricted, verifyUser(), async (req, res) => {
-  const { id } = req.params;
-  const { review_content, rating, user_id, driver_id } = req.body;
-  console.log("WORKING");
+  const id = req.params.id;
+  let { review_content, rating, user_id, ride_id } = req.body;
+  console.log("BODY", req.body);
 
-  if (!review_content || !rating) {
-    res.status(400).json({ message: "Please include a review and rating" });
-  } else if (!user_id || !driver_id) {
-    res.status(400).json({ message: "Please include user and driver ids" });
-  } else {
-    try {
-      const driver = await Driver.getDriverById(id);
+  // Check if review text or a rating number was submitted
+  if (!review_content && !rating) {
+    res
+      .status(400)
+      .json({ message: "Please include a review or rating to post a review." });
+  }
 
-      if (!driver) {
-        res.status(404).json({
-          message: "The driver with the specified ID does not exist"
-        });
-      } else {
-        const review = await Driver.addDriverReview(req.body);
-        res.status(201).json({ message: "Review added successfully.", review });
-      }
-    } catch (error) {
-      res.status(500).json({ message: "A network error occurred" });
+  if (!ride_id) {
+    // Must include a ride_id
+    res.status(400).json({
+      message: "Please include a ride id to post a review"
+    });
+  }
+
+  try {
+    // Retrieves the driver in order to check if it exists on the db
+    const driver = await Driver.getDriverById(id);
+    console.log("DRIVER", driver);
+
+    if (!driver) {
+      res.status(404).json({
+        message: "The driver with the specified ID does not exist"
+      });
+    } else {
+      // If the driver exists, add a driver review from the req.body
+      const newReview = {
+        ...req.body,
+        driver_id: Number(id)
+      };
+
+      //Add driver id from req.params
+      await Driver.addDriverReview(newReview);
+
+      // Retrieve all reviews
+      const reviews = await Driver.getReviews();
+
+      // Retrieve the new review id
+      const reviewId = reviews.length;
+
+      // Retrieving the new review to pass back to the response
+      const review = await Driver.getReviewById(reviewId);
+
+      res.status(201).json({ message: "Review added successfully.", review });
     }
+  } catch (error) {
+    res.status(500).json({ message: "A network error occurred" });
   }
 });
 
 // Add Ride
 
-router.post("/create-ride", restricted, async (req, res) => {
+router.post("/create-ride", async (req, res) => {
   const {
     driver_id,
     user_phone,
@@ -137,7 +165,7 @@ router.post("/create-ride", restricted, async (req, res) => {
   } = req.body;
 
   if (!driver_id || !user_phone) {
-    return res.status(400).json({
+    res.status(400).json({
       message: "Driver ID and User phone number required to create a ride"
     });
   }
@@ -158,18 +186,22 @@ router.post("/create-ride", restricted, async (req, res) => {
   if (!user) {
     // If there is no user, create one for the ride
 
-    const newUser = {
-      phone: user_phone,
-      location: !start_location ? null : start_location,
-      firstname: !firstname ? null : firstname
-    };
-    console.log("NEW USER 1", newUser);
-
     try {
-      const rider = await User.addUser(newUser);
+      const newUser = {
+        phone: user_phone,
+        location: !start_location ? null : start_location,
+        firstname: !firstname ? null : firstname
+      };
 
-      console.log("NEW USER 2", newUser);
-      console.log("RIDER", rider.user_id);
+      // Adding the new user
+      await User.addUser(newUser);
+
+      // Retrieving the new user back from the db
+      const rider = await User.findUserByQuery(user_phone);
+
+      //generating token for the new user
+
+      const token = generateToken(rider);
 
       // pulling data from the new user to create a new ride
       const newRide = {
@@ -179,11 +211,21 @@ router.post("/create-ride", restricted, async (req, res) => {
         end_location: !end_location ? null : end_location
       };
 
-      console.log("NEW RIDE", newRide);
+      // creating the new ride
+      await Driver.addRide(newRide);
 
-      const ride = await Driver.addRide(newRide);
+      // getting all rides
+      const rides = await Driver.getRides();
 
-      res.status(201).json({ message: "Ride successfully created.", ride });
+      // getting the new ride id
+      const ride_id = rides.length;
+
+      // retrieving the new ride to be passed in the response
+      const ride = await Driver.getRideById(ride_id);
+
+      res
+        .status(201)
+        .json({ message: "Ride successfully created.", ride, token });
     } catch (error) {
       res.status(500).json({ message: "A network error occurred." });
     } // End of Try/Catch
@@ -191,8 +233,8 @@ router.post("/create-ride", restricted, async (req, res) => {
     // If the user exists create new ride
     // Start location should be set to the users current location
     // Or the location they specify
-
     try {
+      // Creating the new ride
       const newRide = {
         user_id: user.user_id,
         driver_id: driver.driver_id,
@@ -200,9 +242,23 @@ router.post("/create-ride", restricted, async (req, res) => {
         end_location: !end_location ? null : end_location
       };
 
-      const ride = await Driver.addRide(newRide);
+      // adding the new ride
+      await Driver.addRide(newRide);
 
-      res.status(201).json({ message: "Ride successfully created.", ride });
+      // Getting all rides
+      const rides = await Driver.getRides();
+
+      // Getting the ride id
+      const ride_id = rides.length;
+
+      // Retrieving the new ride from the db to be passed to res
+      const ride = await Driver.getRideById(ride_id);
+
+      const token = generateToken(user);
+
+      res
+        .status(201)
+        .json({ message: "Ride successfully created.", ride, token });
     } catch (error) {
       res.status(500).json({ message: "A network error occurred." });
     }

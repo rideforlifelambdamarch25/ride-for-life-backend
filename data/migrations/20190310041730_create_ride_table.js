@@ -19,8 +19,8 @@ exports.up = function(knex, Promise) {
       .inTable("drivers")
       .onDelete("CASCADE");
 
-    tbl.string("start_location", 255);
-    tbl.string("end_location", 255);
+    tbl.string("start_location", 255).defaultTo(null);
+    tbl.string("end_location", 255).defaultTo(null);
 
     tbl.timestamp("created_at").defaultTo(knex.fn.now());
   });

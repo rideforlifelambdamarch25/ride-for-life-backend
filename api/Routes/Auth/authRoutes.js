@@ -71,8 +71,9 @@ router.post("/drivers/login", async (req, res) => {
         const token = generateToken(driver);
 
         res.status(200).json({
-          message: `${driver.firstname} logged in successfully`,
-          token
+          message: `Driver: ${driver.driver_id} logged in successfully`,
+          token,
+          driver_id: driver.driver_id
         });
       } else {
         res.status(404).json({

@@ -13,7 +13,7 @@ exports.seed = function(knex, Promise) {
           lastname: "Curry",
           phone: "3235465879",
           vehicle_type: "motorcycle",
-          location: `"21.2364, 21.8143"`,
+          location: "21.2364, 21.8143",
           username: "splash_30",
           password: bcrypt.hashSync("password", 12),
           email: "gsw30@gsw.com",

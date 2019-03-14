@@ -127,7 +127,7 @@ router.post("/:id/review", restricted, verifyUser(), async (req, res) => {
 
 // Add Ride
 
-router.post("/create-ride", restricted, async (req, res) => {
+router.post("/create-ride", async (req, res) => {
   const {
     driver_id,
     user_phone,
@@ -158,20 +158,20 @@ router.post("/create-ride", restricted, async (req, res) => {
   if (!user) {
     // If there is no user, create one for the ride
 
-    const newUser = {
-      phone: user_phone,
-      location: !start_location ? null : start_location,
-      firstname: !firstname ? null : firstname
-    };
-    console.log("NEW USER 1", newUser);
-
     try {
-      const rider = await User.addUser(newUser);
+      const newUser = {
+        phone: user_phone,
+        location: !start_location ? null : start_location,
+        firstname: !firstname ? null : firstname
+      };
+      console.log("NEW USER 1", newUser);
+
+      await User.addUser(newUser);
+      const rider = await User.findUserByQuery(user_phone);
 
       console.log("NEW USER 2", newUser);
-      console.log("RIDER", rider.user_id);
-
-      // pulling data from the new user to create a new ride
+      console.log("RIDER", rider);
+      // pulling data from the new us er to create a new ride
       const newRide = {
         user_id: rider.user_id,
         driver_id: driver.driver_id,

@@ -11,21 +11,25 @@ module.exports = {
   getDriverReviews,
   addDriverReview,
   addRide,
-  getDriverById
+  getDriverById,
+  getRides,
+  getRideById
 };
 
 function getDrivers() {
-  return db("drivers").select(
-    "driver_id",
-    "firstname",
-    "lastname",
-    "username",
-    "email",
-    "phone",
-    "vehicle_type",
-    "location",
-    "price"
-  );
+  return db("drivers")
+    .select(
+      "driver_id",
+      "firstname",
+      "lastname",
+      "username",
+      "email",
+      "phone",
+      "vehicle_type",
+      "location",
+      "price"
+    )
+    .orderBy("driver_id");
 }
 
 function findDriverByQuery(query) {
@@ -107,8 +111,7 @@ function getReviewById(id) {
 }
 
 async function addDriverReview(review) {
-  const [id] = await db("reviews").insert(review, "id");
-  return getReviewById(id);
+  return db("reviews").insert(review);
 }
 
 function getRideById(id) {
@@ -117,8 +120,12 @@ function getRideById(id) {
     .first();
 }
 
-async function addRide(ride) {
-  const [id] = await db("rides").insert(ride, "id");
+function getRides() {
+  return db("rides");
+}
 
-  return getRideById(id);
+async function addRide(ride) {
+  await db("rides").insert(ride);
+
+  return getRideById(ride.driver_id);
 }

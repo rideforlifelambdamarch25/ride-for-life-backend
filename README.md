@@ -436,7 +436,8 @@ or
         "start_location": null,
         "end_location": null,
         "created_at": "2019-03-14 01:49:26"
-    }
+    },
+     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxMCwidXNlcm5hbWUiOiJzdGVwaF8zMCIsInR5cGUiOiJkcml2ZXIiLCJpYXQiOjE1NTI0MjE0ODUsImV4cCI6MTU1MjUwNzg4NX0.CDUFFKWBJfYSUIckaVhwJh1jUV26tGBQXRWaZwly-Ic"
 }
 ```
 

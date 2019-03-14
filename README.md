@@ -49,7 +49,17 @@ _example:_
 ```
 {
     "message": "Registration Successful",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0ZXBoXzMwIiwiaWF0IjoxNTUyMzgwMzk1LCJleHAiOjE1NTI0NjY3OTV9.aKCf8zNXcq40A1bRR8Nvh-Qf_EtpTDXc7WC9R_66CeY"
+    "driver": {
+        "driver_id": 1,
+        "firstname": "Steph",
+        "lastname": "Curry",
+        "username": "steph_30",
+        "email": "email@email.com",
+        "phone": "5543322345",
+        "vehicle_type": "motorcycle",
+        "location": "0.328972, 32.574276"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJRUtMOkZPVURGSkwiLCJ0eXBlIjoidXNlciIsImlhdCI6MTU1MjYwMjgyNCwiZXhwIjoxNTUyNjg5MjI0fQ.29ExsUzyuJvcuCGr0OfCWVscKKogbVkLdTFPQ0_g_M8"
 }
 ```
 

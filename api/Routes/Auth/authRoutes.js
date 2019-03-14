@@ -36,12 +36,13 @@ router.post("/drivers/register", async (req, res) => {
     });
   } else {
     try {
-      // const driver = await DriversDb.addDriver(newDriver);
-      await DriversDb.addDriver(newDriver);
+      const driver = await DriversDb.addDriver(newDriver);
       const token = generateToken(newDriver);
+      console.log("DRIVER", driver);
 
       res.status(201).json({
         message: "Registration Successful",
+        driver,
         token
       });
     } catch (error) {
@@ -71,7 +72,7 @@ router.post("/drivers/login", async (req, res) => {
         const token = generateToken(driver);
 
         res.status(200).json({
-          message: `Driver: ${driver.driver_id} logged in successfully`,
+          message: `${driver.firstname} logged in successfully`,
           token,
           driver_id: driver.driver_id
         });

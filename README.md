@@ -1,6 +1,6 @@
 ## Server is live on:
 
-https://rideforlife.herokuapp.com/
+https://rideforlifemarch25.herokuapp.com/
 
 # AUTH ROUTES
 

@@ -93,8 +93,6 @@ router.post("/users/register", async (req, res) => {
   const { firstname, phone, location } = req.body;
 
   const newUser = req.body;
-  const hash = bcrypt.hashSync(password, 12);
-  newUser.password = hash;
 
   if (!firstname || !location) {
     // All required information needed to create a new user account

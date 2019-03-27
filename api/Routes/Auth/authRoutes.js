@@ -3,12 +3,13 @@ const bcrypt = require("bcryptjs");
 const router = express.Router();
 const DriversDb = require("../../../models/drivers/driversModel");
 const UsersDb = require("../../../models/users/usersModel");
+const cors = require('cors');
 
 const { generateToken } = require("../../../middleware/authenticate.js");
 
 // DRIVER REGISTRATION
 
-router.post("/drivers/register", async (req, res) => {
+router.post("/drivers/register", cors(), async (req, res) => {
   const {
     firstname,
     lastname,

@@ -3,13 +3,12 @@ const bcrypt = require("bcryptjs");
 const router = express.Router();
 const DriversDb = require("../../../models/drivers/driversModel");
 const UsersDb = require("../../../models/users/usersModel");
-const cors = require('cors');
 
 const { generateToken } = require("../../../middleware/authenticate.js");
 
 // DRIVER REGISTRATION
 
-router.post("/drivers/register", cors({ credentials: true, origin: 'http://localhost:3000' }), async (req, res) => {
+router.post("/drivers/register", async (req, res) => {
   const {
     firstname,
     lastname,
@@ -91,29 +90,20 @@ router.post("/drivers/login", async (req, res) => {
 // USER REGISTRATION
 
 router.post("/users/register", async (req, res) => {
-  const {
-    firstname,
-    lastname,
-    username,
-    password,
-    email,
-    phone,
-    user_type,
-    location
-  } = req.body;
+  const { firstname, phone, location } = req.body;
 
   const newUser = req.body;
   const hash = bcrypt.hashSync(password, 12);
   newUser.password = hash;
 
-  if (!firstname || !lastname || !username || !password || !user_type) {
+  if (!firstname || !location) {
     // All required information needed to create a new user account
     res
       .status(400)
       .json({ message: "Please include all required information" });
-  } else if (!phone || !email) {
+  } else if (!phone) {
     res.status(400).json({
-      message: "Please include an email or phone number for registration"
+      message: "Please include phone number for registration"
     });
   } else {
     try {

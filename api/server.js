@@ -11,11 +11,7 @@ const authRouter = require("./Routes/Auth/authRoutes");
 
 const server = express();
 
-server.use(
-  helmet(),
-  cors({ credentials: true, origin: "http://localhost:3000" }),
-  express.json()
-);
+server.use(helmet(), cors({ origin: false }), express.json());
 
 // ROUTES
 server.use("/api", authRouter);

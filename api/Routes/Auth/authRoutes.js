@@ -9,7 +9,7 @@ const { generateToken } = require("../../../middleware/authenticate.js");
 
 // DRIVER REGISTRATION
 
-router.post("/drivers/register", cors(), async (req, res) => {
+router.post("/drivers/register", cors({ credentials: true, origin: 'http://localhost:3000' }), async (req, res) => {
   const {
     firstname,
     lastname,
